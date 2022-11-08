@@ -1,3 +1,5 @@
+package transport;
+
 public class Car {
     private String brand = "default";
     private String model = "default";

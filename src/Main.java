@@ -1,53 +1,31 @@
+import transport.Car;
+
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args) {
        //Задания по классу "Human"
 
         System.out.println("Результат выполнения заданий по классу \"Human\":");
-        //Создание объектов Human без конструктора
-        System.out.println("Объекты класса Human, значения полей которых заданы НЕ через конструктор:");
-        Human Максим = new Human();
-        Максим.setName("Максим");
-        Максим.setTown("Минск");
-        Максим.setJobTitle("бренд-менеджер");
-        Максим.setYearOfBirth(1988);
-        System.out.println(Максим);
-
-        Human Аня = new Human();
-        Аня.setName("Аня");
-        Аня.setTown("Москва");
-        Аня.setJobTitle("методист образовательных программ");
-        Аня.setYearOfBirth(1993);
-        System.out.println(Аня);
-
-        Human Катя = new Human();
-        Катя.setName("Катя");
-        Катя.setTown("Калининград");
-        Катя.setJobTitle("продакт-менеджер");
-        Катя.setYearOfBirth(1992);
-        System.out.println(Катя);
-
-        Human Артем = new Human();
-        Артем.setName("Артем");
-        Артем.setTown("Москва");
-        Артем.setJobTitle("директор по развитию бизнеса");
-        Артем.setYearOfBirth(1995);
-        System.out.println(Артем);
-        System.out.println();
-
         //Передача параметров полей ранее созданным объектам Human через конструктор
         System.out.println("Объекты класса Human, значения полей которых заданы через конструктор:");
-        Максим = new Human(1981, "Максим", "Гродно", "менеджер");
+        Human Максим = new Human(1981, "Максим", "Гродно", "менеджер");
         System.out.println(Максим);
 
-        Аня = new Human(1998, "Аня", "Москва", "заместитель генерального директора");
+        Human Аня = new Human(1998, "Аня", "Москва", "заместитель генерального директора");
         System.out.println(Аня);
 
-        Катя = new Human(1993, "Катя", "Владивосток", "инструктор");
+        Human Катя = new Human(1993, "Катя", "Владивосток", "инструктор");
         System.out.println(Катя);
 
-        Артем = new Human(1996, "Артем", "Москва", "директор холдинга");
+        Human Артем = new Human(1996, "Артем", "Москва", "директор холдинга");
         System.out.println(Артем);
 
+        System.out.println();
+
+        //Создадим объект типа Human - Владимир
+        Human Владимир = new Human(2001, "Владимир", "Казань", "");
+        System.out.println(Владимир);
         System.out.println();
 
         //Создадим объект Human с пустыми полями через конструктор
@@ -56,7 +34,7 @@ public class Main {
         System.out.println(testHuman_1);
         System.out.println();
 
-        //Создадим объект Human используя builder
+        /*//Создадим объект Human используя builder
         System.out.println("Создадим объект Human используя builder:");
         Human testHuman_2 = new Human.HumanBuilder().setName("Андрей").setYearOfBirth(2000).build();
         Human testHuman_3 = new Human.HumanBuilder().setTown("Tokyo").build();
@@ -65,7 +43,7 @@ public class Main {
         //И нет жесткой привязки к конструктору, если не все поля можем ввести
         System.out.println(testHuman_2);
         System.out.println(testHuman_3);
-        System.out.println(testHuman_4);
+        System.out.println(testHuman_4);*/
 
         System.out.println();
         System.out.println("----------------------------------------------------------------------");
@@ -139,6 +117,56 @@ public class Main {
         System.out.println("Создадим объект Car с пустыми полями:");
         Car testCar = new Car("AAAA", "", 0, "", "", -6);
         System.out.println(testCar);
+        System.out.println();
+        System.out.println("----------------------------------------------------------------------");
+
+        //Задания по классу "Flower"
+
+        System.out.println("Результат выполнения заданий по классу \"Flower\":");
+
+        Flower Роза = new Flower();
+        Роза.setName("Роза обыкновенная");
+        Роза.setCountry("Голландия");
+        Роза.setCost(35.59);
+        System.out.println(Роза);
+
+        Flower Хризантема = new Flower();
+        Хризантема.setName("Хризантема");
+        Хризантема.setCost(15);
+        Хризантема.setLifeSpan(5);
+        System.out.println(Хризантема);
+
+        Flower Пион = new Flower();
+        Пион.setName("Пион");
+        Пион.setCountry("Англия");
+        Пион.setCost(69.9);
+        Пион.setLifeSpan(1);
+        System.out.println(Пион);
+
+        Flower Гипсофила = new Flower();
+        Гипсофила.setName("Гипсофила");
+        Гипсофила.setCountry("Турция");
+        Гипсофила.setCost(19.5);
+        Гипсофила.setLifeSpan(10);
+        System.out.println(Гипсофила);
+
+        //Букет - это множество отдельных цветов, поэтому использую ArrayList
+        //Каждый букет уникален, поэтому один букет - одна переменная (список цветов)
+        ArrayList <Flower> bouquet_1 = new ArrayList<>();
+        //Добавим в букет 3 розы и 2 хризантемы
+        bouquet_1.add(Роза);
+        bouquet_1.add(Роза);
+        bouquet_1.add(Роза);
+        bouquet_1.add(Хризантема);
+        bouquet_1.add(Хризантема);
+        //Обратимся к методу из класса Flower для просмотра информации по букету
+        Flower.viewBouquet(bouquet_1);
+
+
+
+
+
+
 
     }
 }
