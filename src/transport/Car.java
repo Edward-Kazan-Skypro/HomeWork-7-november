@@ -1,56 +1,92 @@
 package transport;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Car {
+
+    //Неизменяемые поля
     private String brand = "default";
     private String model = "default";
-    private double engineVolume = 1.5;
-    private String color = "белый";
     private int productionYear = 2000;
     private String  productionCountry = "default";
+    private String bodyType = "default";
+    private int numberOfSeats = 4;
 
-    //В этом классе не буду мудрить с билдером, просто в конструкторе пропишу проверку вводимых значений
-    //Хотя в этом классе полей уже больше, чем в Human, а значит и шансов ошибиться в очередности указываемых значений
-    public Car(String brand, String model, int productionYear, String productionCountry, String color, double engineVolume) {
+    //Изменяемые поля
+    double engineVolume = 1.5;
+    String color = "белый";
+    String transmission = "default";
+    String regNumber = "x000xx000";
+    String winterTires = "winter tyres";
+
+    //Поля внутренних классов
+    Car.Key key;
+    Car.Insurance insurance;
+
+    public String getBrand() {
+        return brand;
+    }
+    public String getModel() {
+        return model;
+    }
+    public int getProductionYear() {
+        return productionYear;
+    }
+    public String getProductionCountry() {
+        return productionCountry;
+    }
+    public String getBodyType() {
+        return bodyType;
+    }
+    public int getNumberOfSeats() {return numberOfSeats;}
+
+    //В конструкторе указаны неизменяемые поля, которые можно задать только при создании объекта
+    public Car(String brand, String model, int productionYear, String productionCountry, String bodyType, int numberOfSeats) {
         if (checkInputString(brand)) {
             this.brand = brand;
         }
         if (checkInputString(model)) {
             this.model = model;
         }
-        if (checkInputString(color)) {
-            this.color = color;
+        if (productionYear > 0 && productionYear < LocalDate.now().getYear()) {
+            this.productionYear = productionYear;
         }
         if (checkInputString(productionCountry)) {
             this.productionCountry = productionCountry;
         }
-
-        if (engineVolume > 0) {
-            this.engineVolume = engineVolume;
+        if (checkInputString(bodyType)) {
+            this.bodyType = bodyType;
         }
-        if (productionYear > 0) {
-            this.productionYear = productionYear;
-        }
-    }
-
-    public Car() {
-    }
-
-    public boolean checkInputString(String string) {
-        return string.length() > 0;
-    }
-    //Если проверку прописать только в конструкторе, то при альтернативном создании класса
-    //и заполнении его полей получается, что значения не проверяются...
-    //Значит и в сеттерах надо дублировать код прописывая проверку...
-    public void setBrand(String brand) {
-        if (checkInputString(brand)) {
-            this.brand = brand;
+        if (numberOfSeats > 0) {
+            this.numberOfSeats = numberOfSeats;
         }
     }
 
-    public void setModel(String model) {
-        if (checkInputString(model)) {
-            this.model = model;
-        }
+    //Метод замены типа шин - с зимней на летнюю и наоборот
+    public void seasonalTireChange (String season) {
+        if (season.equalsIgnoreCase("winter")) {
+            setWinterTires("winter tyres");}
+        if (season.equalsIgnoreCase("summer")) {
+            setWinterTires("summer tyres");}
+    }
+    public static boolean checkInputString(String string) {
+        return string.length() > 0 && string != null && !string.isEmpty() && !string.isBlank();
+    }
+    public Key getKey() {
+        return key;
+    }
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public void setKey(Car.Key inputKey) {
+        key = inputKey;
+    }
+
+    public void setInsurance(Car.Insurance inputInsurance) {
+        insurance = inputInsurance;
     }
 
     public void setEngineVolume(double engineVolume) {
@@ -65,15 +101,32 @@ public class Car {
         }
     }
 
-    public void setProductionYear(int productionYear) {
-        if (productionYear > 0) {
-            this.productionYear = productionYear;
+    public String getTransmission() {
+        return transmission;
+    }
+    public void setTransmission(String transmission) {
+        if (checkInputString(transmission)) {
+            this.transmission = transmission;
         }
     }
 
-    public void setProductionCountry(String productionCountry) {
-        if (checkInputString(productionCountry)) {
-            this.productionCountry = productionCountry;
+    public String getRegNumber() {
+        return regNumber;
+    }
+
+    public void setRegNumber(String regNumber) {
+        if (checkInputString(regNumber) & regNumber.length() == 9) {
+
+
+            this.regNumber = regNumber;
+        }
+    }
+
+     public String getWinterTires() {return winterTires;}
+
+    public void setWinterTires(String winterTires) {
+        if (checkInputString(winterTires)) {
+            this.winterTires = winterTires;
         }
     }
 
@@ -85,6 +138,76 @@ public class Car {
                 productionYear + " год выпуска" +
                 ", сборка: " + productionCountry +
                 ", цвет: " + color +
-                ", объем двигателя - " + engineVolume + " л.";
+                ", объем двигателя - " + engineVolume + " л.,\n" +
+                "коробка передач: " + transmission +
+                ", тип кузова: " + bodyType +
+                ", регистрационный номер: " + regNumber +
+                ", количество мест: " + numberOfSeats +
+                ", тип покрышек: " + winterTires + "\n" +
+                "удаленный запуск двигателя: " + key.getRemoteEngineStart() +
+                ", бесключевой доступ: " + key.getKeylessEntry() + "\n" +
+                "срок действия страховки до: " + insurance.getDuration() + " года" +
+                ", стоимость страховки: " + insurance.getCost() +
+                ", номер страхового полиса/договора: " + insurance.getNumber() + "\n";
     }
+
+     public class Key {
+        private String remoteEngineStart = "нет";
+        private String keylessEntry = "нет";
+
+        public String getRemoteEngineStart() {return remoteEngineStart;}
+
+        public String getKeylessEntry() {return keylessEntry;}
+
+        public Key(String remoteEngineStart, String keylessEntry) {
+            if (checkInputString(remoteEngineStart)) this.remoteEngineStart = remoteEngineStart;
+            if (checkInputString(keylessEntry)) this.keylessEntry = keylessEntry;
+        }
+    }
+
+    public class Insurance{
+
+        private String duration = "01.01.1990";
+        private double cost = 0;
+        private int number = 0;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+        public Insurance(String duration, double cost, int number) {
+            if (cost > 0) this.cost = cost;
+            String numberAsString = String.valueOf(number);
+            if (numberAsString.length() == 9) {
+                this.number = number;
+            }
+            else {
+                System.out.println("Неверно указан номер страховки!");
+                System.out.println("Номер страховки не изменен, осталось значение по умолчанию.");
+                System.out.println();
+            }
+            LocalDate dateFromInputDuration = LocalDate.parse(duration,formatter);
+            if (dateFromInputDuration.isAfter(LocalDate.now())) this.duration = duration;
+        }
+
+        public void checkDuration (Car car){
+            LocalDate localDate = LocalDate.now();
+            LocalDate dateFromInsurance = LocalDate.parse(Car.Insurance.this.getDuration(),formatter);
+            if (dateFromInsurance.isBefore(localDate)) {
+                System.out.println("Срока действия страховки истек!");
+                System.out.println("Пожалуйста, продлите Вашу страховую защиту.");
+            }
+        }
+
+        public String getDuration() {
+            return duration;
+        }
+
+        public double getCost() {
+            return cost;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+    }
+
 }

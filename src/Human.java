@@ -8,76 +8,57 @@ public class Human {
 
     String none = "*** Информация не указана ***";
     private int yearOfBirth = 0;
-    private String name = none;
     private String town = none;
-    private String jobTitle = none;
 
+    String name = none;
+    String jobTitle = none;
+
+    public void setYearOfBirth(int yearOfBirth) {
+        if (yearOfBirth > 0) {this.yearOfBirth = yearOfBirth;}
+    }
+    public int getYearOfBirth() {
+        return yearOfBirth;
+    }
+    public String getTown() {
+        return town;
+    }
+    public void setTown(String town) {
+        if (checkInputString (town)) {
+            this.town = town;
+        }
+    }
+
+    public void setName(String name) {
+        if (checkInputString (name)) {
+            this.name = name;
+        }
+    }
     public String getName() {
         return name;
     }
 
-    public int getYearOfBirth() {
-        return yearOfBirth;
+    public void setJobTitle(String jobTitle) {
+        if (checkInputString (jobTitle)) {
+            this.jobTitle = jobTitle;
+        }
     }
-
-    public String getTown() {
-        return town;
-    }
-
     public String getJobTitle() {
         return jobTitle;
     }
 
-    //Комментарий целесообразности использования паттерна Builder
-    //При создании объекта пользователь может не задать какой-либо из параметров
-    //Значит придется писать все возможные варианты конструкторов
-    //Варианты конструкторов:
-    // пустой (без параметров)
-    // год рождения
-    // год рождений + имя
-    // год рождения + город
-    // год рождения + должность
-    // год рождения + имя + город
-    // год рождения + имя + должность
-    // год рождения + город + должность
-    // имя
-    // имя + город
-    // имя + город + должность
-    // имя + должность
-    // город
-    // город + должность
-    // должность
-    // ...
-    //... Многовато ...
-    //К тому же неудобно помнить очередность указания полей при создании объекта
-    //Поэтому и использую паттерн проектирования Builder для создания объекта Human
-    //Информацию по паттерну "нагуглил", если избыточное решение, то удалю.
-
-    //Конструктор с использованием объекта HumanBuilder
-    public Human(HumanBuilder human) {
-        this.name = human.getName();
-        this.town = human.getTown();
-        this.jobTitle = human.getJobTitle();
-        this.yearOfBirth = human.getYearOfBirth();
-    }
-
-    //Конструктор БЕЗ параметров - для первой части задания
+    //Конструктор БЕЗ параметров
     public Human() {
     }
 
-    //Конструктор с указанием значений всех полей - для выполнения условия задачи
-    public Human(int yearOfBirth, String name, String town, String jobTitle) {
-        if (checkInputString(name)) {
-            this.name = name;
+    //Конструктор с указанием значений приватных полей - для них нет сеттеров,
+    //поэтому их обязательно включаем в конструктор
+    //Остальные поля можно заполнить после создания объекта
+    public Human(int yearOfBirth, String town) {
+        if (yearOfBirth > 0) {
+            this.yearOfBirth = yearOfBirth;
         }
         if (checkInputString(town)) {
             this.town = town;
-        }
-        if (checkInputString(jobTitle)) {
-            this.jobTitle = jobTitle;
-        }
-        if (yearOfBirth > 0) {
-            this.yearOfBirth = yearOfBirth;
         }
     }
 
@@ -87,37 +68,14 @@ public class Human {
     //Если string.length() == 0 (например значение поля указано ""), то результат false.
     //Если длина строки больше нуля, то какое-то значение указано.
 
-    //В данном примере проверку на null считаю избыточной,
+    //В данном примере проверку на null и "пустоту" считаю избыточной,
     //т.к. "на входе" никак не может быть такого,
     //потому что в конструкторе при создании объекта мы всегда что-то передаем,
     //не передав через конструктор правильные данные,
     // (я говорю о типе данных, а не о содержимом) - объект не будет создан.
-    //Суммируя - если данные всех полей указаны, то объект будет создан,
-    //иначе, не указывая значение какого-либо поля, объект не появится.
+    //Но, если по условию задачи такую проверку надо указать, то пусть будет.
     public boolean checkInputString (String string) {
-        return string.length() > 0;
-    }
-
-    public void setYearOfBirth(int yearOfBirth) {
-        if (yearOfBirth > 0) {this.yearOfBirth = yearOfBirth;}
-    }
-
-    public void setName(String name) {
-        if (checkInputString (name)) {
-            this.name = name;
-        }
-    }
-
-    public void setTown(String town) {
-        if (checkInputString (town)) {
-            this.town = town;
-        }
-    }
-
-    public void setJobTitle(String jobTitle) {
-        if (checkInputString (jobTitle)) {
-            this.jobTitle = jobTitle;
-        }
+        return string.length() > 0 && string != null && !string.isEmpty() && !string.isBlank();
     }
 
     @Override
@@ -127,69 +85,5 @@ public class Human {
                 + ". Я родился в " + yearOfBirth + " году."
                 + " Я работаю на должности " + jobTitle
                 + ". Будем знакомы!";
-
-    }
-
-    //-----------------------------------------------------------------------------------------------
-    //Внутренний статический (для использования в методе main при создании объектов Human) класс
-    //для создания объекта типа Human
-    public static class HumanBuilder {
-        String none = "*** Информация не указана ***";
-        private int yearOfBirth = 0;
-        private String name = none;
-        private String town = none;
-        private String jobTitle = none;
-
-        private int getYearOfBirth() {
-            return yearOfBirth;
-        }
-
-        private String getName() {
-            return name;
-        }
-
-        private String getTown() {
-            return town;
-        }
-
-        private String getJobTitle() {
-            return jobTitle;
-        }
-
-        public boolean checkInputString (String string) {
-            return string.length() > 0;
-        }
-
-        public HumanBuilder setYearOfBirth(int yearOfBirth) {
-            if (yearOfBirth > 0) {
-                this.yearOfBirth = yearOfBirth;
-            }
-            return this;
-        }
-
-        public HumanBuilder setName(String name) {
-            if (checkInputString(name)) {
-                this.name = name;
-            }
-            return this;
-        }
-
-        public HumanBuilder setTown(String town) {
-            if (checkInputString(town)) {
-                this.town = town;
-            }
-            return this;
-        }
-
-        public HumanBuilder setJobTitle(String jobTitle) {
-            if (checkInputString(jobTitle)) {
-                this.jobTitle = jobTitle;
-            }
-            return this;
-        }
-
-        public Human build() {
-            return new Human(this);
-        }
     }
 }

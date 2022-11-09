@@ -8,7 +8,7 @@ public class Flower {
         return this;
     }
 
-    private String name;
+    String name;
     private String flowerColor = "белый";
     private String country = "Россия";
     private double cost = 1;
@@ -67,15 +67,17 @@ public class Flower {
         String resultInfo = "";
         System.out.println("Состав букета:");
 
+        //Множество для хранения названий цветов и их количества
         Map<String, Integer> namesAndAmount = new HashMap<>();
+        //Множество для хранения уникальных названий цветов в букете
         Set<String> uniqNames = new HashSet<>();
-
+        //Вспомогательный список имен, для удобства подсчета количества видов цветов в букете
         List<String> names = new ArrayList<>();
 
         for (int i = 0; i < bouquet.size(); i++) {
             //информация о стоимости букета
             sumBouquet += bouquet.get(i).getCost();
-            //информация о стоянии букета
+            //информация о стоянии букета ("время жизни") - сохраняем минимальный срок
             if (bouquet.get(i).getLifeSpan() < lifeSpanBouquet) {
                 lifeSpanBouquet = bouquet.get(i).getLifeSpan();
             }
